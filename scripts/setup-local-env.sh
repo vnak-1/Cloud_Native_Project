@@ -51,7 +51,7 @@ existing_value() { # existing_value <KEY>
 random_secret() { node -e 'console.log(require("crypto").randomBytes(32).toString("hex"))'; }
 
 echo "Your Atlas connection string WITHOUT a database name,"
-echo "for example: mongodb+srv://user:password@cluster0.abcde.mongodb.net"
+echo "like: mongodb+srv://<db-user>:<db-password>@<cluster-host>"
 read -r -s -p "Paste it (hidden): " ATLAS
 echo
 read -r -s -p "Password for the first admin (at least 6 characters, hidden): " ADMIN_PASSWORD
