@@ -1,0 +1,15 @@
+{
+  "name": "equipment-service",
+  "version": "1.0.0",
+  "description": "EquipHub equipment inventory: CRUD plus atomic reserve/release for loans",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "mongoose": "^8.24.5"
+  }
+}
