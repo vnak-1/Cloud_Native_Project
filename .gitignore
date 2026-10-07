@@ -1,0 +1,11 @@
+# Dependencies: npm ci installs them, so they're never committed
+node_modules/
+
+# Secrets: every service's .env stays local (the .env.example files are committed)
+.env
+
+# npm error logs
+npm-debug.log*
+
+# macOS Finder metadata
+.DS_Store
