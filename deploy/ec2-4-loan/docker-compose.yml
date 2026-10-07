@@ -1,0 +1,26 @@
+# EC2-4: loan-service (port 3004). Only EC2-1 (the gateway) may reach this port.
+# It calls the equipment service through the load balancer on EC2-3, never a replica.
+# On the instance, in this folder:
+#   sudo docker compose pull
+#   sudo docker compose up -d
+# Secrets and EC2-3's private IP come from .env (see .env.example).
+
+services:
+  loan-service:
+    image: vnak3/loan-service:v1.0
+    init: true # a tiny init process starts first, so stop signals reach Node properly
+    restart: unless-stopped # start again after a crash or a reboot
+    env_file: .env
+    environment:
+      PORT: "3004"
+      SERVICE_NAME: loan-service
+      # Filled in from .env; compose stops with this message if it's missing
+      EQUIPMENT_URL: http://${EQUIPMENT_PRIVATE_IP:?set EQUIPMENT_PRIVATE_IP in .env}:8080
+    ports:
+      - "3004:3004"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3004/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s # time to connect to Atlas

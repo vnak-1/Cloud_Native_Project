@@ -1,0 +1,29 @@
+# EC2-1: the API gateway, the only instance clients talk to (port 3000).
+# On the instance, in this folder:
+#   sudo docker compose pull
+#   sudo docker compose up -d
+# Secrets and the other instances' private IPs come from .env (see .env.example).
+
+services:
+  gateway:
+    image: vnak3/gateway:v1.0
+    init: true # a tiny init process starts first, so stop signals reach Node properly
+    restart: unless-stopped # start again after a crash or a reboot
+    env_file: .env
+    environment:
+      PORT: "3000"
+      SERVICE_NAME: gateway
+      # ${...} is filled in from .env. The ":?" makes compose stop with that message if
+      # the value is missing, instead of starting with a broken URL.
+      REGISTRATION_URL: http://${AUTH_PRIVATE_IP:?set AUTH_PRIVATE_IP in .env}:3001
+      LOGIN_URL: http://${AUTH_PRIVATE_IP:?set AUTH_PRIVATE_IP in .env}:3002
+      EQUIPMENT_URL: http://${EQUIPMENT_PRIVATE_IP:?set EQUIPMENT_PRIVATE_IP in .env}:8080
+      LOAN_URL: http://${LOAN_PRIVATE_IP:?set LOAN_PRIVATE_IP in .env}:3004
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

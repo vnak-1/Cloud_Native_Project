@@ -1,0 +1,41 @@
+# EC2-2: registration-service (port 3001) and login-service (port 3002).
+# Only EC2-1 (the gateway) is allowed to reach these ports (security group rule).
+# On the instance, in this folder:
+#   sudo docker compose pull
+#   sudo docker compose up -d
+# Both services read their secrets from the same .env (see .env.example).
+
+services:
+  registration-service:
+    image: vnak3/registration-service:v1.0
+    init: true # a tiny init process starts first, so stop signals reach Node properly
+    restart: unless-stopped # start again after a crash or a reboot
+    env_file: .env
+    environment:
+      PORT: "3001"
+      SERVICE_NAME: registration-service
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3001/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s # time to connect to Atlas
+
+  login-service:
+    image: vnak3/login-service:v1.0
+    init: true
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: "3002"
+      SERVICE_NAME: login-service
+    ports:
+      - "3002:3002"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3002/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
