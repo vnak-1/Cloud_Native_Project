@@ -1,0 +1,16 @@
+{
+  "name": "registration-service",
+  "version": "1.0.0",
+  "description": "EquipHub registration: student sign-up, admin creation, first admin from .env",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "mongoose": "^8.24.5"
+  }
+}
