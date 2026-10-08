@@ -146,7 +146,7 @@ What to screenshot for the submission is listed in
 ## Repository layout
 
 ```
-equipment-lending-microservices/
+Cloud_Native_Project/
 ├── docker-compose.yml        the whole system, locally
 ├── gateway/                  API gateway (route table, JWT check, forwarding)
 ├── registration-service/     sign-up, admin creation, first admin from .env

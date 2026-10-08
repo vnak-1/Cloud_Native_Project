@@ -28,10 +28,10 @@ instance stops and starts. Public IPs change.
    registration-service, login-service, equipment-service, loan-service, equipment-lb.
 
 2. **Push the repo to GitHub**, so each instance can download its deploy folder. Create an
-   empty repository `equipment-lending-microservices` on GitHub (no README), then:
+   empty **public** repository `Cloud_Native_Project` on GitHub (no README), then:
 
    ```bash
-   git remote add origin https://github.com/vnak-1/equipment-lending-microservices.git
+   git remote add origin https://github.com/vnak-1/Cloud_Native_Project.git
    git push -u origin main
    ```
 
@@ -140,7 +140,7 @@ if it's already there):
 
 ```bash
 sudo apt install -y git
-git clone https://github.com/vnak-1/equipment-lending-microservices.git
+git clone https://github.com/vnak-1/Cloud_Native_Project.git
 ```
 
 (If the repository is private, copy the instance's deploy folder over with `scp` instead.)
@@ -153,7 +153,7 @@ Start them in this order, so each service finds the ones it depends on:
 On every instance the steps are the same:
 
 ```bash
-cd ~/equipment-lending-microservices/deploy/<folder>
+cd ~/Cloud_Native_Project/deploy/<folder>
 nano .env                      # type this instance's lines (listed below) with real values
                                # save: Ctrl+O, Enter; quit: Ctrl+X
 chmod 600 .env                 # only you can read it
