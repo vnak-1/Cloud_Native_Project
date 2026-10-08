@@ -2,7 +2,7 @@
 #   Start:  docker compose up --build     (stays in the foreground; Ctrl+C stops everything)
 #
 # Each service reads its secrets from its own .env file (create them first with
-# scripts/setup-local-env.sh, or copy each .env.example to .env). Service URLs and
+# scripts/setup-local-env.sh). Service URLs and
 # INSTANCE_ID are set below under "environment:", which wins over the same names in .env.
 #
 # Clients should only use the gateway on port 3000. Ports 3001, 3002, 3004 and 8080 are

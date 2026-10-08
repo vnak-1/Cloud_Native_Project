@@ -145,7 +145,7 @@ On every instance the steps are the same:
 
 ```bash
 cd ~/equipment-lending-microservices/deploy/<folder>
-nano .env                      # type the lines from .env.example with real values
+nano .env                      # type this instance's lines (listed below) with real values
                                # save: Ctrl+O, Enter; quit: Ctrl+X
 chmod 600 .env                 # only you can read it
 sudo docker compose pull       # download the images from Docker Hub

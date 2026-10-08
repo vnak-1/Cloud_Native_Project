@@ -3,7 +3,7 @@
 # On the instance, in this folder:
 #   sudo docker compose pull
 #   sudo docker compose up -d
-# Secrets and EC2-3's private IP come from .env (see .env.example).
+# Secrets and EC2-3's private IP come from .env (listed in docs/DEPLOY.md).
 
 services:
   loan-service:

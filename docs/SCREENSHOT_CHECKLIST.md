@@ -22,7 +22,7 @@ Tips:
 | A4 | `gateway/routeTable.js` | The whole route table: every route with its roles (all role rules in one place) |
 | A5 | `nginx/nginx.conf` | The `upstream` with `equipment-1:3003` and `equipment-2:3003`, and `listen 8080` |
 | A6 | `equipment-service/Dockerfile` and `docker-compose.yml` | The production-ready Dockerfile (pinned image, `npm ci --omit=dev`, `USER node`), and the compose file with two replicas behind `equipment-lb` |
-| A7 | `.gitignore` and one `.env.example` | `.env` is ignored; the example only has placeholders (no secrets in the repo) |
+| A7 | `.gitignore`, and `git status` with every `.env` present | `.env` is ignored, so `git status` lists no `.env` file (no secrets in the repo) |
 
 ## B. Docker on your Mac
 

@@ -1,7 +1,7 @@
 # Dependencies: npm ci installs them, so they're never committed
 node_modules/
 
-# Secrets: every service's .env stays local (the .env.example files are committed)
+# Secrets: every .env stays local and is never committed
 .env
 
 # npm error logs

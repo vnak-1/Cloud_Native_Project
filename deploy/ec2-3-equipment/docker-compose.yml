@@ -3,7 +3,7 @@
 # On the instance, in this folder:
 #   sudo docker compose pull
 #   sudo docker compose up -d
-# The replicas read their secrets from .env (see .env.example).
+# The replicas read their secrets from .env (listed in docs/DEPLOY.md).
 
 services:
   equipment-1:

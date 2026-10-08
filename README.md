@@ -88,7 +88,19 @@ You need Docker Desktop (running) and Node.js 24 (for the helper scripts).
    ./scripts/setup-local-env.sh
    ```
 
-   Or copy each `<service>/.env.example` to `<service>/.env` and fill it in by hand.
+   To write them by hand instead, each `<service>/.env` needs these lines (`KEY=value`, no
+   quotes, no spaces around `=`):
+
+   | Service | Variables |
+   |---|---|
+   | gateway | `PORT=3000`, `SERVICE_NAME=gateway`, `JWT_SECRET`, `INTERNAL_KEY`, `REGISTRATION_URL=http://localhost:3001`, `LOGIN_URL=http://localhost:3002`, `EQUIPMENT_URL=http://localhost:3003`, `LOAN_URL=http://localhost:3004` |
+   | registration-service | `PORT=3001`, `SERVICE_NAME=registration-service`, `MONGO_URI` (ends with `/userdb`), `INTERNAL_KEY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` |
+   | login-service | `PORT=3002`, `SERVICE_NAME=login-service`, `MONGO_URI` (ends with `/userdb`), `INTERNAL_KEY`, `JWT_SECRET`, `JWT_EXPIRES_IN=24h` |
+   | equipment-service | `PORT=3003`, `SERVICE_NAME=equipment-service`, `INSTANCE_ID=equipment-1`, `MONGO_URI` (ends with `/equipmentdb`), `INTERNAL_KEY` |
+   | loan-service | `PORT=3004`, `SERVICE_NAME=loan-service`, `MONGO_URI` (ends with `/loandb`), `INTERNAL_KEY`, `EQUIPMENT_URL=http://localhost:3003` |
+
+   `INTERNAL_KEY` is the same in all five; `JWT_SECRET` is the same in the gateway and
+   login-service. docker compose replaces the URLs and `INSTANCE_ID` with its own values.
 
 2. Start the whole system (seven containers), in the foreground:
 
@@ -142,7 +154,7 @@ equipment-lending-microservices/
 ├── equipment-service/        inventory CRUD, atomic reserve/release
 ├── loan-service/             loans, lifecycle, reserve/release with compensation
 ├── nginx/                    equipment load balancer (nginx.conf + Dockerfile)
-├── deploy/                   one docker-compose.yml + .env.example per EC2 instance
+├── deploy/                   one docker-compose.yml per EC2 instance
 ├── postman/                  collection and environments
 ├── scripts/                  setup-local-env.sh, build-and-push.sh, make-expired-token.js
 └── docs/                     ARCHITECTURE.md, DEPLOY.md, SCREENSHOT_CHECKLIST.md
@@ -150,5 +162,6 @@ equipment-lending-microservices/
 
 The four services behind the gateway share one layout: `server.js` (setup, `/health`, error
 handler, graceful shutdown), `config/db.js`, `models/`, `routes/`, `middleware/`, a
-`Dockerfile`, a `.dockerignore` and a `.env.example`. The gateway has no database; its role
-rules are in `routeTable.js`. Secrets live only in `.env` files, which are never committed.
+`Dockerfile` and a `.dockerignore`. The gateway has no database; its role rules are in
+`routeTable.js`. Secrets live only in `.env` files, which are never committed; the variables
+they need are listed above (locally) and in [docs/DEPLOY.md](docs/DEPLOY.md) (on EC2).

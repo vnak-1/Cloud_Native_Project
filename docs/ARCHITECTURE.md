@@ -199,7 +199,7 @@ health checks don't use up turns.
 ### 7. Configuration in environment variables (12-factor)
 
 Settings and secrets come from the environment, never from code: each service has a `.env`
-(never committed) and a committed `.env.example` with placeholders. Non-secret settings that
+(never committed); README.md and DEPLOY.md list the variables each one needs. Non-secret settings that
 differ between local and EC2 (service URLs, `INSTANCE_ID`) are set in the compose files'
 `environment:`. The same image runs locally and on EC2; only the environment changes. Every
 `MONGO_URI` ends with its database name (otherwise MongoDB silently uses `test`), and every

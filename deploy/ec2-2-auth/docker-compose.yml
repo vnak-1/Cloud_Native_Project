@@ -3,7 +3,7 @@
 # On the instance, in this folder:
 #   sudo docker compose pull
 #   sudo docker compose up -d
-# Both services read their secrets from the same .env (see .env.example).
+# Both services read their secrets from the same .env (listed in docs/DEPLOY.md).
 
 services:
   registration-service:

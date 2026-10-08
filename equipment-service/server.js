@@ -18,7 +18,7 @@ const internalRoutes = require('./routes/internal');
 const required = ['PORT', 'SERVICE_NAME', 'INSTANCE_ID', 'MONGO_URI', 'INTERNAL_KEY'];
 const missing = required.filter((name) => !process.env[name]);
 if (missing.length > 0) {
-  console.error(`Missing environment variables: ${missing.join(', ')}. See .env.example.`);
+  console.error(`Missing environment variables: ${missing.join(', ')}. Add them to .env (README.md lists them).`);
   process.exit(1);
 }
 const { PORT, SERVICE_NAME, INSTANCE_ID, MONGO_URI } = process.env;

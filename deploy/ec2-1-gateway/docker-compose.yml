@@ -2,7 +2,7 @@
 # On the instance, in this folder:
 #   sudo docker compose pull
 #   sudo docker compose up -d
-# Secrets and the other instances' private IPs come from .env (see .env.example).
+# Secrets and the other instances' private IPs come from .env (listed in docs/DEPLOY.md).
 
 services:
   gateway:
