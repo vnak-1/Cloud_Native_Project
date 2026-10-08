@@ -95,8 +95,13 @@ chmod 400 equiphub.pem
 ssh -i equiphub.pem ubuntu@<PUBLIC-IP>
 ```
 
+Docker Engine with the Compose plugin is the only thing to install, and it's the same on all
+four instances. Node.js, nginx and MongoDB are not installed on the hosts: Node and nginx
+run inside the images, and the database is Atlas.
+
 Update the system, then install Docker from Docker's official apt repository, exactly as in
-the course (docs.docker.com/engine/install/ubuntu):
+the course (docs.docker.com/engine/install/ubuntu). Docker's repository supports Ubuntu
+26.04 (`resolute`) on x86.
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -122,15 +127,19 @@ sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo systemctl status docker   # should say "active (running)"; press q to quit
-sudo docker compose version    # Docker Compose v2
+sudo docker compose version    # Docker Compose version v5.x
 ```
+
+If `apt upgrade` shows a purple screen asking which services to restart, press Enter.
 
 Use `docker compose` **with a space**. The slides show `docker-compose`, the old v1 tool,
 which these packages don't install.
 
-Then download the deploy files:
+Then download the deploy files (Ubuntu usually ships with git; the install line is harmless
+if it's already there):
 
 ```bash
+sudo apt install -y git
 git clone https://github.com/vnak-1/equipment-lending-microservices.git
 ```
 
