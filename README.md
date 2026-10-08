@@ -143,6 +143,8 @@ instance put its `.env` next to `deploy/ec2-N-<name>/docker-compose.yml` and run
 What to screenshot for the submission is listed in
 [docs/SCREENSHOT_CHECKLIST.md](docs/SCREENSHOT_CHECKLIST.md).
 
+What the demo shows, grouped by grading criterion, is listed in [docs/DEMO.md](docs/DEMO.md).
+
 ## Repository layout
 
 ```
@@ -157,7 +159,7 @@ Cloud_Native_Project/
 ├── deploy/                   one docker-compose.yml per EC2 instance
 ├── postman/                  collection and environments
 ├── scripts/                  setup-local-env.sh, build-and-push.sh, make-expired-token.js
-└── docs/                     ARCHITECTURE.md, DEPLOY.md, SCREENSHOT_CHECKLIST.md
+└── docs/                     ARCHITECTURE.md, DEMO.md, DEPLOY.md, SCREENSHOT_CHECKLIST.md
 ```
 
 The four services behind the gateway share one layout: `server.js` (setup, `/health`, error
