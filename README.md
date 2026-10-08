@@ -140,10 +140,7 @@ instance put its `.env` next to `deploy/ec2-N-<name>/docker-compose.yml` and run
    5. Negative tests**. Every request has tests; login and create requests save tokens and
    ids for the requests after them.
 
-What to screenshot for the submission is listed in
-[docs/SCREENSHOT_CHECKLIST.md](docs/SCREENSHOT_CHECKLIST.md).
 
-What the demo shows, grouped by grading criterion, is listed in [docs/DEMO.md](docs/DEMO.md).
 
 ## Repository layout
 
