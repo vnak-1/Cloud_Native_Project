@@ -1,24 +1,13 @@
-# Runs the whole EquipHub system on one machine, for local testing.
-#   Start:  docker compose up --build     (stays in the foreground; Ctrl+C stops everything)
-#
-# Each service reads its secrets from its own .env file (create them first with
-# scripts/setup-local-env.sh). Service URLs and
-# INSTANCE_ID are set below under "environment:", which wins over the same names in .env.
-#
-# Clients should only use the gateway on port 3000. Ports 3001, 3002, 3004 and 8080 are
-# published here only so you can show that calling a service directly is refused.
-
 services:
   gateway:
     build: ./gateway
     image: vnak3/gateway:v1.0
-    init: true # a tiny init process starts first, so stop signals reach Node properly
+    init: true
     env_file: ./gateway/.env
     environment:
-      # Inside Docker, services find each other by their service name
       REGISTRATION_URL: http://registration-service:3001
       LOGIN_URL: http://login-service:3002
-      EQUIPMENT_URL: http://equipment-lb:8080 # the load balancer, never a replica
+      EQUIPMENT_URL: http://equipment-lb:8080
       LOAN_URL: http://loan-service:3004
     ports:
       - "3000:3000"
@@ -44,13 +33,13 @@ services:
     init: true
     env_file: ./registration-service/.env
     ports:
-      - "3001:3001" # local only: to demo "Direct access is not allowed"
+      - "3001:3001"
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3001/health"]
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 20s # time to connect to Atlas
+      start_period: 20s
 
   login-service:
     build: ./login-service
@@ -58,7 +47,7 @@ services:
     init: true
     env_file: ./login-service/.env
     ports:
-      - "3002:3002" # local only: to demo "Direct access is not allowed"
+      - "3002:3002"
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3002/health"]
       interval: 10s
@@ -66,15 +55,13 @@ services:
       retries: 3
       start_period: 20s
 
-  # Two replicas of the same equipment image. They publish no ports, so the only way in
-  # is through the load balancer.
   equipment-1:
     build: ./equipment-service
     image: vnak3/equipment-service:v1.0
     init: true
     env_file: ./equipment-service/.env
     environment:
-      INSTANCE_ID: equipment-1 # not a secret, so it's set here; shows up in every response
+      INSTANCE_ID: equipment-1
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3003/health"]
       interval: 10s
@@ -83,8 +70,6 @@ services:
       start_period: 20s
 
   equipment-2:
-    # Same image as equipment-1, built once by equipment-1. "never" stops compose from
-    # pulling an older copy from Docker Hub instead.
     image: vnak3/equipment-service:v1.0
     pull_policy: never
     init: true
@@ -98,21 +83,18 @@ services:
       retries: 3
       start_period: 20s
 
-  # nginx load balancer in front of the two replicas (round robin)
   equipment-lb:
     build: ./nginx
     image: vnak3/equipment-lb:v1.0
     init: true
     ports:
-      - "8080:8080" # local only: equipment still refuses requests without the internal key
+      - "8080:8080"
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/nginx-health"]
       interval: 10s
       timeout: 5s
       retries: 3
     depends_on:
-      # nginx looks up the replica names when it starts, so wait until both are healthy.
-      # restart: true restarts nginx if a replica is recreated, so it finds the new container.
       equipment-1:
         condition: service_healthy
         restart: true
@@ -126,9 +108,9 @@ services:
     init: true
     env_file: ./loan-service/.env
     environment:
-      EQUIPMENT_URL: http://equipment-lb:8080 # through the load balancer, never a replica
+      EQUIPMENT_URL: http://equipment-lb:8080
     ports:
-      - "3004:3004" # local only: to demo "Direct access is not allowed"
+      - "3004:3004"
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3004/health"]
       interval: 10s

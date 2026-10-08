@@ -1,6 +1,3 @@
-// The gateway checks the JWT, then tells this service who the caller is in x-user-*
-// headers. They can be trusted because only requests with the internal key (from the
-// gateway) get this far. This puts the caller on req.user for the routes.
 function requireUser(req, res, next) {
   const id = req.get('x-user-id');
   if (!id) {

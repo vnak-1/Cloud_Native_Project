@@ -18,8 +18,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// A short tag for this run. It goes into emails and item names, so the collection",
-                  "// can run again against the same database without \"already exists\" errors.",
                   "pm.environment.set(\"runTag\", String(Date.now()).slice(-6));"
                 ]
               }

@@ -1,8 +1,3 @@
-// Every route the gateway exposes, and who may call it. This table is the only place role
-// rules live. Anything not listed gets 404 (deny by default). /internal/* is never listed,
-// so the internal reserve/release routes can't be reached from outside.
-//
-// roles: 'public' means no token is needed. Otherwise the token's role must be in the list.
 module.exports = [
   { method: 'POST',   path: '/register/userregister', roles: 'public',          service: 'registration' },
   { method: 'POST',   path: '/auth/login',            roles: 'public',          service: 'login' },

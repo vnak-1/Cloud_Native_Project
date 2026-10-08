@@ -1,20 +1,14 @@
 #!/usr/bin/env bash
-# Builds every EquipHub image for EC2 and pushes it to Docker Hub as vnak3/<name>:v1.0.
-# EC2 runs Linux on x86 ("linux/amd64") but this Mac is ARM, so --platform tells Docker to
-# build x86 images. Run it yourself, after "docker login":
-#   ./scripts/build-and-push.sh
 set -euo pipefail
-cd "$(dirname "$0")/.." # the repo root
+cd "$(dirname "$0")/.."
 
 HUB_USER=vnak3
 TAG=v1.0
 
-# build_and_push <image name> <folder with its Dockerfile>
 build_and_push() {
   local image="$HUB_USER/$1:$TAG"
   echo
   echo "==> $image (from ./$2)"
-  # buildx builds for the given platform, and --push uploads the result to Docker Hub
   docker buildx build --platform linux/amd64 --tag "$image" --push "./$2"
 }
 

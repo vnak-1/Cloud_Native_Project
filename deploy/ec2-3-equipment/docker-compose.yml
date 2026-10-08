@@ -1,27 +1,19 @@
-# EC2-3: the nginx load balancer (port 8080) in front of two equipment replicas.
-# Only the load balancer publishes a port; EC2-1 and EC2-4 reach it on 8080.
-# On the instance, in this folder:
-#   sudo docker compose pull
-#   sudo docker compose up -d
-# The replicas read their secrets from .env (listed in docs/DEPLOY.md).
-
 services:
   equipment-1:
     image: vnak3/equipment-service:v1.0
-    init: true # a tiny init process starts first, so stop signals reach Node properly
-    restart: unless-stopped # start again after a crash or a reboot
+    init: true
+    restart: unless-stopped
     env_file: .env
     environment:
       PORT: "3003"
       SERVICE_NAME: equipment-service
-      INSTANCE_ID: equipment-1 # not a secret; shows up in every response
-    # No ports: the replicas are only reachable through the load balancer
+      INSTANCE_ID: equipment-1
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3003/health"]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 20s # time to connect to Atlas
+      start_period: 20s
 
   equipment-2:
     image: vnak3/equipment-service:v1.0
@@ -51,8 +43,6 @@ services:
       timeout: 5s
       retries: 3
     depends_on:
-      # nginx looks up the replica names when it starts, so wait until both are healthy.
-      # restart: true restarts nginx if a replica is recreated, so it finds the new container.
       equipment-1:
         condition: service_healthy
         restart: true
