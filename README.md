@@ -79,8 +79,6 @@ name (local column); on EC2 they use private IPs. Only the gateway is public.
 
 ## Run it locally
 
-You need Docker Desktop (running) and Node.js 24 (for the helper scripts).
-
 1. Create every service's `.env` (it asks for your Atlas connection string and the first
    admin's password, and generates the shared secrets):
 
@@ -121,12 +119,6 @@ You need Docker Desktop (running) and Node.js 24 (for the helper scripts).
 Ports 3001, 3002, 3004 and 8080 are published only locally, to show that calling a service
 directly is refused. On EC2 they aren't reachable from the internet at all.
 
-## Deploy to EC2
-
-The step-by-step guide is in [docs/DEPLOY.md](docs/DEPLOY.md). In short: push the images
-with `./scripts/build-and-push.sh` (builds for x86, pushes `vnak3/<name>:v1.0`), then on each
-instance put its `.env` next to `deploy/ec2-N-<name>/docker-compose.yml` and run
-`sudo docker compose pull && sudo docker compose up -d`.
 
 ## Test with Postman
 
